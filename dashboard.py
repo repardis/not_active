@@ -142,11 +142,6 @@ app.layout = html.Div([
     # Histogram
     html.Div([
         dcc.Graph(id='tenure-histogram')
-    ], style={'margin': '20px'}),
-    
-    # Additional Chart - Salesperson Branch Count
-    html.Div([
-        dcc.Graph(id='salesperson-branch-count')
     ], style={'margin': '20px'})
 ])
 
@@ -164,8 +159,7 @@ app.layout = html.Div([
      Output('subscription-hist', 'figure'),
      Output('negative-charge-pie', 'figure'),
      Output('no-data-days-pie', 'figure'),
-     Output('tenure-histogram', 'figure'),
-     Output('salesperson-branch-count', 'figure')],
+     Output('tenure-histogram', 'figure')],
     [Input('salesperson-dropdown', 'value'),
      Input('city-dropdown', 'value'),
      Input('status-dropdown', 'value')]
@@ -565,25 +559,10 @@ def update_dashboard(selected_salesperson, selected_city, selected_status):
     else:
         fig_tenure = px.bar(title='No Tenure Data Available')
     
-    # Salesperson branch count for "آموزش و تحویل" status
-    training_branches = filtered_df[filtered_df['BranchStatus'] == 'آموزش و تحویل']
-    if len(training_branches) > 0:
-        salesperson_counts = training_branches.groupby('salesman').size().reset_index(name='branch_count')
-        salesperson_counts = salesperson_counts.sort_values('branch_count', ascending=False)
-        
-        fig_salesperson_count = px.bar(salesperson_counts, x='salesman', y='branch_count',
-                                      title='Branch Count by Salesperson (آموزش و تحویل Status Only)')
-        fig_salesperson_count.update_xaxes(title='Salesperson')
-        fig_salesperson_count.update_yaxes(title='Number of Branches')
-        # Rotate x-axis labels for better readability
-        fig_salesperson_count.update_layout(xaxis_tickangle=-45)
-    else:
-        fig_salesperson_count = px.bar(title='No Training & Delivery Branches Available')
-    
     return (kpi_cards, fig_city_eval, fig_city_club, fig_salesperson, fig_deactive_pie, 
             fig_branch_status_eval, fig_branch_status_club, fig_orders_per_day, fig_avg_revenue, 
-            fig_subscription, fig_neg_charge, fig_nodata_pie, fig_tenure, fig_salesperson_count)
+            fig_subscription, fig_neg_charge, fig_nodata_pie, fig_tenure)
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=10000, debug=False)
