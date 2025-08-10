@@ -42,7 +42,7 @@ app = dash.Dash(__name__)
 # Create dashboard layout
 app.layout = html.Div([
     # Header
-    html.H1("Business Analytics Dashboard", style={'textAlign': 'center', 'color': '#2c3e50'}),
+    html.H1("Not Active license Dashboard", style={'textAlign': 'center', 'color': '#2c3e50'}),
     
     # Dropdowns
     html.Div([
